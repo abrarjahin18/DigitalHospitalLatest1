@@ -1,0 +1,187 @@
+﻿@{
+    ViewBag.Title = "Admin Page";
+    Layout = "~/Views/Shared/Admin_LayoutPage.cshtml";
+}
+
+<script type="text/javascript">
+
+
+    function Save() {
+
+        //alert('hgh');
+        var Driver_info = {
+            Driver_name: $('#Drivername').val(),
+            Driver_phone: $('#DriverPhone').val(),
+            Driver_age: $('#DriverAge').val(),
+            
+        }
+        $.ajax({
+            url: "/Admin/saveDriver",
+            type: "POST",
+            data: Driver_info,
+            dataType: "JSON",
+            success: function (result, status, xhr) {
+
+                if (result == 1) {
+                    alert('Driver Added successfully');
+                }
+                else {
+                    alert('not registered');
+                }
+
+            },
+            error: function (req, status, errorObj) {
+                alert(req.data);
+                alert(status);
+                alert(errorObj);
+            }
+        });
+    }
+    function cancel() {
+        window.location = "/Admin/AdminViewPage";
+    }
+</script>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+    <style>
+
+        .font_color {
+            color: lightskyblue;
+        }
+
+        .sidenav {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #111;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+
+            .sidenav a {
+                padding: 8px 8px 8px 32px;
+                text-decoration: none;
+                font-size: 25px;
+                color: #818181;
+                display: block;
+                transition: 0.3s;
+            }
+
+                .sidenav a:hover {
+                    color: #f1f1f1;
+                }
+
+            .sidenav .closebtn {
+                position: absolute;
+                top: 0;
+                right: 25px;
+                font-size: 36px;
+                margin-left: 50px;
+            }
+    </style>
+    <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet" />
+
+
+    <script src="~/Content/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="~/Scripts/jquery.dataTables.min.js"></script>
+</head>
+
+<body>
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="../Admin/AdminViewPage">Admin page</a>
+        <a href="../Admin/AmbulanceAddViewPage">Add Ambulance</a>
+        <a href="#">View monthly income</a>
+        <a href="../Admin/CabinAddViewPage">Add Cabin</a>
+        <a href="../Login/LoginView">Log Out</a>
+    </div>
+    <div id="main">
+        @*<h2>Sidenav Push Example</h2>
+            <p>Click on the element below to open the side navigation menu, and push this content to the right.</p>*@
+        <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Welcome Admin</span>
+
+        <h1 class="font_color">Add drivers for ambulance</h1>
+
+        <form class="form-horizontal">
+            <div class="box-body">
+
+                <div class="form-group">
+                    <label for="Drivername" class="col-sm-2 control-label">Driver Name</label>
+
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="Drivername" placeholder="Enter Name">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="DriverPhone" class="col-sm-2 control-label">Phone</label>
+
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="DriverPhone" maxlength="11" placeholder="phone number">
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="DriverAge" class="col-sm-2 control-label">Age</label>
+
+                    <div class="col-sm-10">
+                        <input type="number" class="form-control" id="DriverAge" placeholder="enter Age">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="imagePreview" class="col-sm-2 control-label">Photo</label>
+
+                    <div class="col-sm-10">
+                        <img src="~/images/Add.png" style="margin:10px" height="200" width="200" id="imagePreview" />
+                        <input type="file" name="ImageUpload" accept="image/jpeg, image/jpg, image/png" onchange="ShowImagePreview(this, document.getElementById('imagePreview')" />
+                        <div>
+                            <span class="label label-danger">Only jpeg ,jpg,png is supported</span>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <!-- /.box-body -->
+                <div class="box-footer">
+
+                    <button type="button" id="cancel" class="btn" onclick="cancel()">Cancel</button>
+                    <button type="submit" id="LogIn" class="btn btn-info center-block" onclick="Save()">save</button>
+
+                </div>
+
+            </div>
+
+            <script>
+                function openNav() {
+                    var a = document.getElementById("mySidenav").style.width;
+                    var b = document.getElementById("main").style.marginLeft;
+
+                    if (a == "" || a == "0px") {
+                        document.getElementById("mySidenav").style.width = "250px";
+                        document.getElementById("main").style.marginLeft = "250px";
+                    }
+                    else {
+                        document.getElementById("mySidenav").style.width = "0px";
+                        document.getElementById("main").style.marginLeft = "0px";
+                    }
+
+                }
+
+
+            </script>
+            </form>
+            </div>
+</body>
+</html>

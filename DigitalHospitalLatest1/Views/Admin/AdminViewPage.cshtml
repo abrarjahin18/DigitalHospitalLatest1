@@ -1,0 +1,334 @@
+﻿@{
+    ViewBag.Title = "Admin Page";
+    Layout = "~/Views/Shared/Admin_LayoutPage.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+    <style>
+
+        .font_color {
+            color: lightskyblue;
+        }
+
+        .sidenav {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #111;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+
+            .sidenav a {
+                padding: 8px 8px 8px 32px;
+                text-decoration: none;
+                font-size: 25px;
+                color: #818181;
+                display: block;
+                transition: 0.3s;
+            }
+
+                .sidenav a:hover {
+                    color: #f1f1f1;
+                }
+
+            .sidenav .closebtn {
+                position: absolute;
+                top: 0;
+                right: 25px;
+                font-size: 36px;
+                margin-left: 50px;
+            }
+    </style>
+    <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet" />
+
+
+    <script src="~/Content/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="~/Scripts/jquery.dataTables.min.js"></script>
+</head>
+<body>
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="../Admin/AdminViewPage">Admin page</a>
+        <a href="../Admin/AmbulanceAddViewPage">Add Ambulance</a>
+        <a href="#">View monthly income</a>
+        <a href="../Admin/CabinAddViewPage">Add Cabin</a>
+        <a href="../Login/LoginView">Log Out</a>
+    </div>
+    <div id="main">
+        @*<h2>Sidenav Push Example</h2>
+        <p>Click on the element below to open the side navigation menu, and push this content to the right.</p>*@
+        <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Welcome Admin</span>
+
+        <h1 class="font_color">our doctors</h1>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Doctor List</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body no-padding">
+                        <br />
+                        <br />
+                        <div class="row">
+                            <div class="col-sm-6 col-md-6 col-lg-6" style="font-size:smaller">
+                                <div>
+                                    <table id="datatblGrid">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    DOCTOR ID
+                                                </th>
+                                                <th>
+                                                    Doctor Name
+                                                </th>
+                                                <th>
+                                                    Doctor Email
+                                                </th>
+                                                <th>Doctor phone</th>
+                                                <th>Doctor gender</th>
+                                                <th>
+                                                    Doctor field
+                                                </th>
+                                                <th>
+                                                    Doctor salary
+                                                </th>
+                                                <th>
+                                                    Doctor Age
+                                                </th>
+                                                <th>
+                                                    Doctor Address
+                                                </th>
+                                                <th>
+                                                    Action
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        @*<div class="row">
+                            <div class="col-sm-6 col-md-6 col-lg-6">
+                                <div>
+                                    <table id="tblGrid"></table>
+                                    <div id="divPager">
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>*@
+
+                        <!-- /.row -->
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+            </div>
+
+        </div>
+
+        <h1 class=" font_color"> Our staffs</h1>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">staff List</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body no-padding">
+                        <br />
+                        <br />
+                        <div class="row">
+                            <div class="col-sm-6 col-md-6 col-lg-6" style="font-size:smaller">
+                                <div>
+                                    <table id="datatblGrid_staff">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Staff ID
+                                                </th>
+                                                <th>
+                                                    Staff Name
+                                                </th>
+                                               
+                                                <th>Staff phone</th>
+                                                <th>Staff age</th>
+                                                <th>
+                                                     Staff type
+                                                </th>
+                                                <th>
+                                                    staff Availity
+                                                </th>
+                                                <th>
+                                                    Action
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        @*<div class="row">
+                            <div class="col-sm-6 col-md-6 col-lg-6">
+                                <div>
+                                    <table id="tblGrid"></table>
+                                    <div id="divPager">
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>*@
+
+                        <!-- /.row -->
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        function openNav() {
+            var a = document.getElementById("mySidenav").style.width;
+            var b = document.getElementById("main").style.marginLeft;
+
+            if (a == "" || a == "0px") {
+                document.getElementById("mySidenav").style.width = "250px";
+                document.getElementById("main").style.marginLeft = "250px";
+            }
+            else {
+                document.getElementById("mySidenav").style.width = "0px";
+                document.getElementById("main").style.marginLeft = "0px";
+            }
+
+        }
+
+
+    </script>
+</body>
+</html>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        GetAllDoctors();
+        GetAllStaff();
+    });
+
+    function Tocabin(param) {
+        var Staff_Assigning = {
+            staff_id: param,
+        }
+         $.ajax({
+            url: "/Admin/AssignStaffToCabin",
+           // type: "POST",
+            data: Staff_Assigning,
+            dataType: "JSON",
+            success: function (result, status, xhr) {
+
+                 if (result == 1) {
+                    alert('Staff assigned successfully');
+                }
+                else {
+                    alert('not assigned');
+                }
+                
+            },
+            error: function (req, status, errorObj) {
+                alert(req.data);
+                alert(status);
+                alert(errorObj);
+            }
+        });
+    }
+    function GetAllStaff() {
+        if ($.fn.dataTable.isDataTable('#datatblGrid_staff')) {
+            var tables = $('#datatblGrid_staff').DataTable();
+            tables.destroy();
+        }
+        
+        $('#datatblGrid_staff').DataTable({
+
+            "ajax": {
+                "url": "/Admin/Getstaff",
+                "type": "GET",
+                "datatype": "json"
+            },
+            "columns": [
+                { "data": "staff_id", "autoWidth": true },
+                { "data": "staff_name", "autoWidth": true },
+                { "data": "staff_phone", "autoWidth": true },
+                { "data": "staff_age", "autoWidth": true },
+                { "data": "staff_type", "autoWidth": true },
+                { "data": "staff_availity", "autoWidth": true },
+                {
+                    "mData": null,
+                    "bSortable": false,
+                    "mRender": function (data, type, full) {
+                        return '<button type="button" onclick="LoadForEdit(\'' + data.staff_id + '\');" class="btn-info">Edit</button>' +
+                            '&nbsp;&nbsp; <button type="button" onclick="DeleteData(\'' + data.staff_id + '\');" class="btn-danger">Delete</button>' +
+                            '&nbsp;&nbsp; <button type="button" onclick="ToAmbulance(\'' + data.staff_id + '\');" class="btn-danger">Add to ambulance</button>' +
+                            '&nbsp;&nbsp; <button type="button" onclick="Tocabin(\'' + data.staff_id + '\');" class="btn-danger">Add to cabin</button>';
+                    }
+                }
+            ]
+        });
+    }
+
+    function GetAllDoctors() {
+        if ($.fn.dataTable.isDataTable('#datatblGrid')) {
+            var tables = $('#datatblGrid').DataTable();
+            tables.destroy();
+        }
+        var Doctor_field = {
+            Doctor_field: $('#FindDoctor').val()
+           }
+        $('#datatblGrid').DataTable({
+
+            "ajax": {
+                "url": "/Doctor/GetDoctors",
+                "type": "GET",
+                "datatype": "json"
+            },
+            "columns": [
+                { "data": "Doctor_id", "autoWidth": true },
+                { "data": "Doctor_name", "autoWidth": true },
+                { "data": "Doctor_email", "autoWidth": true },
+                { "data": "Doctor_phone", "autoWidth": true },
+                { "data": "Doctor_gender", "autoWidth": true },
+                { "data": "Doctor_field", "autoWidth": true },
+                { "data": "Doctor_salary", "autoWidth": true },
+                { "data": "Doctor_age", "autoWidth": true },
+                { "data": "Doctor_address", "autoWidth": true },
+                {
+                    "mData": null,
+                    "bSortable": false,
+                    "mRender": function (data, type, full) {
+                        return '<button type="button" onclick="LoadForEdit(\'' + data.Doctor_id + '\');" class="btn-info">Edit</button>' +
+                            '&nbsp;&nbsp; <button type="button" onclick="DeleteData(\'' + data.Doctor_id + '\');" class="btn-danger">Delete</button>';
+                    }
+                }
+            ]
+        });
+    }
+
+</script>

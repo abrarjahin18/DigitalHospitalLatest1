@@ -1,0 +1,344 @@
+﻿@{
+    ViewBag.Title = "Patient Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+    <style>
+
+        .font_color {
+            color: lightskyblue;
+        }
+
+        .sidenav {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #111;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+
+            .sidenav a {
+                padding: 8px 8px 8px 32px;
+                text-decoration: none;
+                font-size: 25px;
+                color: #818181;
+                display: block;
+                transition: 0.3s;
+            }
+
+                .sidenav a:hover {
+                    color: #f1f1f1;
+                }
+
+            .sidenav .closebtn {
+                position: absolute;
+                top: 0;
+                right: 25px;
+                font-size: 36px;
+                margin-left: 50px;
+            }
+    </style>
+    <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet" />
+
+
+    <script src="~/Content/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="~/Scripts/jquery.dataTables.min.js"></script>
+</head>
+<body>
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="../Patient/PatientPrivatePage">Dash Board</a>
+        <a href="#">Your Prescription</a>
+        <a href="../Patient/User_Profile">Update Profile</a>
+        <a href="#">Requesting Ambulance</a>
+        <a href="#">Your Bill</a>
+        <a href="../Patient/CabinBookingViewPage">Cabin Booking</a>
+        <a href="../Login/LoginView">Log Out</a>
+    </div>
+    <div id="main">
+        @*<h2>Sidenav Push Example</h2>
+        <p>Click on the element below to open the side navigation menu, and push this content to the right.</p>*@
+        <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Welcome @Session["PatientName"]</span>
+
+        <h1 class="font_color">Find your doctor</h1>
+        <div class="form-group">
+            <label for="FindDoctor" class="col-sm-2 control-label">Department</label>
+            <div class="col-sm-10">
+                <select id="FindDoctor" name="role" class="form-control" required>
+                    <option value="0" style="display: none;">Select Department</option>
+                    <option value="ANESTHESIOLOGY">ANESTHESIOLOGY</option>
+                    <option value="CARDIAC AND VASCULAR SURGERY">CARDIAC AND VASCULAR SURGERY</option>
+                    <option value="CARDIOLOGY (INTERVENTIONAL)">CARDIOLOGY (INTERVENTIONAL)</option>
+                    <option value="CLINICAL HEMATOLOGY">CLINICAL HEMATOLOGY</option>
+                    <option value="Colorectal and Laparoscopic Surgery">COLORECTAL AND LAPAROSCOPIC SURGERY</option>
+                    <option value="DENTAL and MAXILLOFACIAL SURGERY">DENTAL and MAXILLOFACIAL SURGERY</option>
+                    <option value="Dental Care">DENTAL CARE</option>
+                    <option value="DERMATOLOGY">DERMATOLOGY</option>
+                    <option value="EMERGENCY Room">EMERGENCY ROOM</option>
+                    <option value="ENDOCRINOLOGY">ENDOCRINOLOGY</option>
+                    <option value="ENT, HEAD and NECK SURGERY">ENT HEAD and NECK SURGERY</option>
+                    <option value="EXECUTIVE HEALTH CHECK-UP">EXECUTIVE HEALTH CHECK-UP</option>
+                    <option value="GASTROENTEROLOGY">GASTROENTEROLOGY</option>
+                    <option value="GENERAL SURGERY">GENERAL SURGERY</option>
+                    <option value="ICU">ICU</option>
+                    <option value="INTERNAL MEDICINE">INTERNAL MEDICINE</option>
+                    <option value="IVF">IVF</option>
+                    <option value="NEONATOLOGY">NEONATOLOGY</option>
+                    <option value="NEPHROLOGY">NEPHROLOGY</option>
+                    <option value="NEURO SURGERY">NEURO SURGERY</option>
+                    <option value="NEUROMEDICINE">NEUROMEDICINE</option>
+                    <option value="OBGYN">OBGYN</option>
+                    <option value="ONCOLOGY">ONCOLOGY</option>
+                    <option value="OPHTHALMOLOGY">OPHTHALMOLOGY</option>
+                    <option value="ORTHOPEDICS">ORTHOPEDICS</option>
+                    <option value="PATHOLOGY and LAB MEDICINE">PATHOLOGY AND LAB MEDICINE</option>
+                    <option value="Pediatric Nephrology">PEDIATRIC NEPHROLOGY</option>
+                    <option value="PEDIATRIC SURGERY">PEDIATRIC SURGERY</option>
+                    <option value="PEDIATRICS">PEDIATRICS</option>
+                    <option value="PHYSICAL MEDICINE">PHYSICAL MEDICINE</option>
+                    <option value="Plastic Surgery">PLASTIC SURGERY</option>
+                    <option value="PSYCHIATRY">PSYCHIATRY</option>
+                    <option value="RADIOLOGY and IMAGING">RADIOLOGY and IMAGING</option>
+                    <option value="RESPIRATORY MEDICINE">RESPIRATORY MEDICINE</option>
+                    <option value="RHEUMATOLOGY">RHEUMATOLOGY</option>
+                    <option value="UROLOGY">UROLOGY</option>
+
+                </select>
+                <div>
+                    <span class="label label-danger">Please select department</span>
+                </div>
+            </div>
+        </div>
+
+        <h1> Our Doctors </h1>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Doctor List</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body no-padding">
+                        <br />
+                        <br />
+                        <div class="row">
+                            <div class="col-sm-6 col-md-6 col-lg-6" style="font-size:smaller">
+                                <div>
+                                    <table id="datatblGrid">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    DOCTOR Name
+                                                </th>
+                                                <th>
+                                                    Doctor Email
+                                                </th>
+                                                <th>
+                                                    Doctor phone
+                                                </th>
+                                                <th>Doctor gender</th>
+                                                <th>Doctor field</th>
+                                                <th>
+                                                    Doctor age
+                                                </th>
+                                                <th>
+                                                    Action
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        @*<div class="row">
+                            <div class="col-sm-6 col-md-6 col-lg-6">
+                                <div>
+                                    <table id="tblGrid"></table>
+                                    <div id="divPager">
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>*@
+
+                        <!-- /.row -->
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Booked Cabin List</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body no-padding">
+                        <br />
+                        <br />
+                        <div class="row">
+                            <div class="col-sm-6 col-md-6 col-lg-6" style="font-size:smaller">
+                                <div>
+                                    <table id="datatblGrid_cabin">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Staff Name
+                                                </th>
+                                                <th>
+                                                    Cabin Number
+                                                </th>
+                                               
+                                                <th>
+                                                    Action
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        @*<div class="row">
+                            <div class="col-sm-6 col-md-6 col-lg-6">
+                                <div>
+                                    <table id="tblGrid"></table>
+                                    <div id="divPager">
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>*@
+
+                        <!-- /.row -->
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        function openNav() {
+            var a = document.getElementById("mySidenav").style.width;
+            var b = document.getElementById("main").style.marginLeft;
+
+            if (a == "" || a == "0px") {
+                document.getElementById("mySidenav").style.width = "250px";
+                document.getElementById("main").style.marginLeft = "250px";
+            }
+            else {
+                document.getElementById("mySidenav").style.width = "0px";
+                document.getElementById("main").style.marginLeft = "0px";
+            }
+
+        }
+
+
+    </script>
+</body>
+</html>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        GetAllDoctors();
+        ShowBookedCabin();
+    });
+
+
+    function GetAllDoctors() {
+        if ($.fn.dataTable.isDataTable('#datatblGrid')) {
+            var tables = $('#datatblGrid').DataTable();
+            tables.destroy();
+        }
+        var Doctor_field = {
+            Doctor_field: $('#FindDoctor').val()
+           }
+        $('#datatblGrid').DataTable({
+
+            "ajax": {
+                "url": "/Doctor/GetAllDoctors",
+                "type": "GET",
+                "datatype": "json"
+            },
+            "columns": [
+                { "data": "Doctor_name", "autoWidth": true },
+                { "data": "Doctor_email", "autoWidth": true },
+                { "data": "Doctor_phone", "autoWidth": true },
+                { "data": "Doctor_gender", "autoWidth": true },
+                { "data": "Doctor_field", "autoWidth": true },
+                 { "data": "Doctor_age", "autoWidth": true },
+                {
+                    "mData": null,
+                    "bSortable": false,
+                    "mRender": function (data, type, full) {
+                        return '<button type="button" onclick="Appointment(\'' + data.Doctor_phone + '\');" class="btn-info">Take Appointment</button>';//+
+                           // '&nbsp;&nbsp; <button type="button" onclick="DeleteData(\'' + data.Doctor_id + '\');" class="btn-danger">Delete</button>';
+                    }
+                }
+            ]
+        });
+            //function Appointment(param) {
+            //    $.ajax({
+            //        url: "/Doctor/GetDoctorByPhone",
+            //        type: "GET",
+            //        data: { 'Doctor_phone': param },
+            //        dataType: "JSON"
+            //        // success: function (data) {
+            //        //}
+            //    });
+    }
+    function ShowBookedCabin() {
+        if ($.fn.dataTable.isDataTable('#datatblGrid_cabin')) {
+            var tables = $('#datatblGrid_cabin').DataTable();
+            tables.destroy();
+        }
+        var Doctor_field = {
+            Doctor_field: $('#FindDoctor').val()
+           }
+        $('#datatblGrid_cabin').DataTable({
+
+            "ajax": {
+                "url": "/Patient/ShowCabin",
+                "type": "GET",
+                "datatype": "json"
+            },
+            "columns": [
+                { "data": "staff_name", "autoWidth": true },
+                { "data": "Cabin_no", "autoWidth": true },
+                {
+                    "mData": null,
+                    "bSortable": false,
+                    "mRender": function (data, type, full) {
+                        return '<button type="button" onclick="Relase(\'' + data.Cabin_no + '\');" class="btn-info">Relase</button>';//+
+                           // '&nbsp;&nbsp; <button type="button" onclick="DeleteData(\'' + data.Doctor_id + '\');" class="btn-danger">Delete</button>';
+                    }
+                }
+            ]
+        });
+           
+    }
+
+</script>

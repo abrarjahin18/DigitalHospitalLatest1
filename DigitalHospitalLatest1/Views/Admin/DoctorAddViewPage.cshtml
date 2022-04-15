@@ -1,0 +1,284 @@
+﻿@{
+    ViewBag.Title = "Admin Page";
+    Layout = "~/Views/Shared/Admin_LayoutPage.cshtml";
+}
+
+<script type="text/javascript">
+
+
+    function Save() {
+
+        //alert('hgh');
+        var Doctor_info = {
+            Doctor_name: $('#Doctorname').val(),
+            Doctor_email: $('#DoctorEmail').val(),
+            Doctor_phone: $('#DoctorPhone').val(),
+            Doctor_password: $('#DoctorPassword').val(),
+            Doctor_age: $('#DoctorAge').val(),
+            Doctor_address: $('#DoctorAddress').val(),
+            Doctor_salary: $('#Doctorincome').val(),
+            Doctor_gender: $('#DoctorGender').val(),
+            Doctor_field: $('#Doctorfield').val()
+        }
+        $.ajax({
+            url: "/Admin/Adding_Doctor",
+            type: "POST",
+            data: Doctor_info,
+            dataType: "JSON",
+            success: function (result, status, xhr) {
+                if (result == "This Email already exists") {
+                    alert('This Email already exists');
+                }
+                if (result == "This phone number already exists") {
+                    alert('This phone number already exists');
+                }
+                if (result == 1) {
+                    alert('Doctor added successfully');
+                }
+                else {
+                    alert('not added');
+                }
+
+              
+            },
+            error: function (req, status, errorObj) {
+                alert(req.data);
+                alert(status);
+                alert(errorObj);
+            }
+        });
+    }
+    function cancel() {
+        window.location = "/Admin/AdminViewPage";
+    }
+</script>
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+    <style>
+
+        .font_color {
+            color: lightskyblue;
+        }
+
+        .sidenav {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #111;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+
+            .sidenav a {
+                padding: 8px 8px 8px 32px;
+                text-decoration: none;
+                font-size: 25px;
+                color: #818181;
+                display: block;
+                transition: 0.3s;
+            }
+
+                .sidenav a:hover {
+                    color: #f1f1f1;
+                }
+
+            .sidenav .closebtn {
+                position: absolute;
+                top: 0;
+                right: 25px;
+                font-size: 36px;
+                margin-left: 50px;
+            }
+    </style>
+    <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet" />
+
+
+    <script src="~/Content/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="~/Scripts/jquery.dataTables.min.js"></script>
+</head>
+<body>
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="../Admin/AdminViewPage">Admin page</a>
+        <a href="../Admin/AmbulanceAddViewPage">Add Ambulance</a>
+        <a href="#">View monthly income</a>
+        <a href="../Admin/CabinAddViewPage">Add Cabin</a>
+        <a href="../Login/LoginView">Log Out</a>
+    </div>
+
+    <div id="main">
+        @*<h2>Sidenav Push Example</h2>
+            <p>Click on the element below to open the side navigation menu, and push this content to the right.</p>*@
+        <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Welcome Admin</span>
+
+        <h1 class="font_color">Add doctors</h1>
+        <form class="form-horizontal">
+            <div class="box-body">
+
+                <div class="form-group">
+                    <label for="Doctorname" class="col-sm-2 control-label">Doctor name</label>
+
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="Doctorname" placeholder="Enter Name">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="DoctorEmail" class="col-sm-2 control-label">Doctor Email</label>
+
+                    <div class="col-sm-10">
+                        <input type="email" class="form-control" id="DoctorEmail" placeholder="Enter Email">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="DoctorPhone" class="col-sm-2 control-label">Phone</label>
+
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="DoctorPhone" maxlength="11" placeholder="phone number">
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="DoctorPassword" class="col-sm-2 control-label">Password</label>
+
+                    <div class="col-sm-10">
+                        <input type="password" class="form-control" id="DoctorPassword" placeholder="Password">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="DoctorAge" class="col-sm-2 control-label">Age</label>
+
+                    <div class="col-sm-10">
+                        <input type="number" class="form-control" id="DoctorAge" placeholder="Age">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="DoctorAddress" class="col-sm-2 control-label">Address</label>
+
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="DoctorAddress" placeholder="Address">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Doctorincome" class="col-sm-2 control-label">doctor monthly salary from hospital</label>
+
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="Doctorincome" placeholder="monthly salary">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="DoctorGender" class="col-sm-2 control-label">Gender</label>
+                    <div class="col-sm-10">
+                        <select id="DoctorGender" name="role" class="form-control" required>
+                            <option value="0" style="display: none;">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+
+                        </select>
+                        <div>
+                            <span class="label label-danger">Please select a gender</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Doctorfield" class="col-sm-2 control-label">Department</label>
+                    <div class="col-sm-10">
+                        <select id="Doctorfield" name="role" class="form-control" required>
+                            <option value="0" style="display: none;">Select Department</option>
+                            <option value="ANESTHESIOLOGY">ANESTHESIOLOGY</option>
+                            <option value="CARDIAC AND VASCULAR SURGERY">CARDIAC AND VASCULAR SURGERY</option>
+                            <option value="CARDIOLOGY (INTERVENTIONAL)">CARDIOLOGY (INTERVENTIONAL)</option>
+                            <option value="CLINICAL HEMATOLOGY">CLINICAL HEMATOLOGY</option>
+                            <option value="Colorectal and Laparoscopic Surgery">COLORECTAL AND LAPAROSCOPIC SURGERY</option>
+                            <option value="DENTAL and MAXILLOFACIAL SURGERY">DENTAL and MAXILLOFACIAL SURGERY</option>
+                            <option value="Dental Care">DENTAL CARE</option>
+                            <option value="DERMATOLOGY">DERMATOLOGY</option>
+                            <option value="EMERGENCY Room">EMERGENCY ROOM</option>
+                            <option value="ENDOCRINOLOGY">ENDOCRINOLOGY</option>
+                            <option value="ENT, HEAD and NECK SURGERY">ENT HEAD and NECK SURGERY</option>
+                            <option value="EXECUTIVE HEALTH CHECK-UP">EXECUTIVE HEALTH CHECK-UP</option>
+                            <option value="GASTROENTEROLOGY">GASTROENTEROLOGY</option>
+                            <option value="GENERAL SURGERY">GENERAL SURGERY</option>
+                            <option value="ICU">ICU</option>
+                            <option value="INTERNAL MEDICINE">INTERNAL MEDICINE</option>
+                            <option value="IVF">IVF</option>
+                            <option value="NEONATOLOGY">NEONATOLOGY</option>
+                            <option value="NEPHROLOGY">NEPHROLOGY</option>
+                            <option value="NEURO SURGERY">NEURO SURGERY</option>
+                            <option value="NEUROMEDICINE">NEUROMEDICINE</option>
+                            <option value="OBGYN">OBGYN</option>
+                            <option value="ONCOLOGY">ONCOLOGY</option>
+                            <option value="OPHTHALMOLOGY">OPHTHALMOLOGY</option>
+                            <option value="ORTHOPEDICS">ORTHOPEDICS</option>
+                            <option value="PATHOLOGY and LAB MEDICINE">PATHOLOGY AND LAB MEDICINE</option>
+                            <option value="Pediatric Nephrology">PEDIATRIC NEPHROLOGY</option>
+                            <option value="PEDIATRIC SURGERY">PEDIATRIC SURGERY</option>
+                            <option value="PEDIATRICS">PEDIATRICS</option>
+                            <option value="PHYSICAL MEDICINE">PHYSICAL MEDICINE</option>
+                            <option value="Plastic Surgery">PLASTIC SURGERY</option>
+                            <option value="PSYCHIATRY">PSYCHIATRY</option>
+                            <option value="RADIOLOGY and IMAGING">RADIOLOGY and IMAGING</option>
+                            <option value="RESPIRATORY MEDICINE">RESPIRATORY MEDICINE</option>
+                            <option value="RHEUMATOLOGY">RHEUMATOLOGY</option>
+                            <option value="UROLOGY">UROLOGY</option>
+
+                        </select>
+                        <div>
+                            <span class="label label-danger">Please select department</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="imagePreview" class="col-sm-2 control-label">Photo</label>
+
+                    <div class="col-sm-10">
+                        <img src="~/images/Add.png" style="margin:10px" height="200" width="200" id="imagePreview" />
+                        <input type="file" name="ImageUpload" accept="image/jpeg, image/jpg, image/png" onchange="ShowImagePreview(this, document.getElementById('imagePreview')" />
+                        <div>
+                            <span class="label label-danger">Only jpeg ,jpg,png is supported</span>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <!-- /.box-body -->
+                <div class="box-footer">
+
+                    <button type="button" id="cancel" class="btn" onclick="cancel()">Cancel</button>
+                    <button type="submit" id="LogIn" class="btn btn-info center-block" onclick="Save()">save</button>
+
+                </div>
+                <!-- /.box-footer -->
+
+            </div>
+        </form>
+    </div>
+    <script>
+        function openNav() {
+            var a = document.getElementById("mySidenav").style.width;
+            var b = document.getElementById("main").style.marginLeft;
+
+            if (a == "" || a == "0px") {
+                document.getElementById("mySidenav").style.width = "250px";
+                document.getElementById("main").style.marginLeft = "250px";
+            }
+            else {
+                document.getElementById("mySidenav").style.width = "0px";
+                document.getElementById("main").style.marginLeft = "0px";
+            }
+
+        }
+
+
+    </script>
+</body>
+</html>

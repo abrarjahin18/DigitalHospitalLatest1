@@ -1,0 +1,97 @@
+﻿@{
+    ViewBag.Title = "Log In";
+    Layout = "~/Views/Shared/login_LayoutPage.cshtml";
+}
+
+<script src="~/Content/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="~/Scripts/jquery.dataTables.min.js"></script>
+<script type="text/javascript">
+
+    function Save() {
+
+        //alert('hgh');
+        var phn = $('#phone').val();
+        var pass = $('#Password').val();
+        if (phn == null || phn == 0) {
+            alert('Please enter phone number');
+            return;
+        }
+        if (phn.length < 11) {
+            alert('Please enter 11 digit phone number');
+            return;
+        }
+
+        if (pass == null || pass == "") {
+            alert('Please enter Password');
+            return;
+        }
+
+
+        var Login_info = {
+            Phone: $('#phone').val(),
+            Passward: $('#Password').val()
+        }
+        $.ajax({
+            url: "/Login/login_user",
+            type: "POST",
+            data: Login_info,
+            dataType: "JSON",
+            success: function (data, status, xhr) {
+                 if (data == "patient") {
+                    window.location = "/Patient/PatientPrivatePage";
+                }
+                if (data == "doctor") {
+                    window.location = "/Doctor/DoctorPrivatePage";
+                }
+                if (data == "admin") {
+                     window.location = "/Admin/AdminViewPage";
+                }
+                if (data == "Password is incorrect") {
+                    alert("wrong password");
+                }
+                if(data!="patient"&&data!="doctor"&&data!="admin") {
+                    alert("you are not registered");
+                }
+            },
+            error: function (req, status, errorObj) {
+                alert(req.data);
+                alert(status);
+                alert(errorObj);
+            }
+        });
+    }
+
+    function cancel() {
+         window.location = "/Home/Index";
+    }
+
+</script>
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    
+    <link href="~/Content/login/login.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="login-box">
+        <h1>Login Form</h1>
+        <div class="textbox">
+            <i class="fas fa-user"></i>
+            <input type="text" placeholder=" Enter Phone" id="phone" maxlength="11">
+        </div>
+
+        <div class="textbox">
+            <i class="fas fa-lock"></i>
+            <input type="password" placeholder="Enter Password" id="Password">
+        </div>
+
+
+        <input type="submit" class="btn" value="log in" onclick="Save()">
+        <input type="button" class="btn" value="cancel" onclick="cancel()">
+        <a href="../Patient/PatientSignupView" class="text-center" style="color:red">Register a new membership</a>
+    </div>
+</body>
+</html>
